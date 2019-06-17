@@ -15,5 +15,5 @@ steps:
     containerRegistry: 'SEDataHubRegistry'
     repository: 'azure-iot-edge-modules-secureaccess'
     command: 'buildAndPush'
-    Dockerfile: 'Dockerfile.arm32v7'
+    Dockerfile: '**/Dockerfile'
   
