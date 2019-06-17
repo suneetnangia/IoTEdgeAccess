@@ -10,10 +10,9 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: Docker@2
-  inputs:
-    containerRegistry: 'SEDataHubRegistry'
-    repository: 'azure-iot-edge-modules-secureaccess'
-    command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile.arm32v7'
-  
+# - task: Docker@2
+#   inputs:
+#     containerRegistry: 'SEDataHubRegistry'
+#     repository: 'azure-iot-edge-modules-secureaccess'
+#     command: 'buildAndPush'
+#     Dockerfile: '**/Dockerfile.arm32v7'
