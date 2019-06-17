@@ -15,5 +15,13 @@ steps:
     version: '2.2.300'
 - task: DotNetCoreCLI@2
   inputs:
-    command: 'build'
+    command: 'publish'
+    publishWebProjects: false
     projects: '**/*.csproj'
+    zipAfterPublish: false
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+  
