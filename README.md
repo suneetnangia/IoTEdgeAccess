@@ -6,8 +6,9 @@ This is a solution for IoT Edge module which allows remote access by using devic
 ![solution design](./Architecture/EdgeAccess.JPG)
 
 Features-
-1. JIT Access
-2. Secure Access via Device Stream.
+1. JIT Access.
+2. Auditing.
+3. Secure Access via Device Stream.
 
 To learn more about device stream feature, see here-
 https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-device-streams-overview
