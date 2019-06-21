@@ -2,31 +2,34 @@
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    trigger:
+    - master
 
-trigger:
-- master
+    pool:
+      vmImage: 'ubuntu-latest'
 
-pool:
-  vmImage: 'ubuntu-latest'
-
-steps:
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: '2.2.300'
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    projects: '**/*.csproj'
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    projects: '**/*Tests*.csproj'
-    testRunTitle: 'Unit Tests'
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'publish'
-    publishWebProjects: false
-    projects: '**/Azure.Iot.Edge.Modules.SecureAccess.csproj'
-    arguments: '-c Release -o out'
-    zipAfterPublish: false
+    steps:
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '2.2.300'
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'test'
+        projects: '**/*Tests*.csproj'
+        testRunTitle: 'Unit Tests'
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'publish'
+        publishWebProjects: false
+        projects: '**/Azure.Iot.Edge.Modules.SecureAccess.csproj'
+        arguments: '-c Release -o out'
+        zipAfterPublish: false
