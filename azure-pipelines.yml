@@ -27,6 +27,6 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: false
-    projects: 'Azure.Iot.Edge.Modules.SecureAccess.csproj'
+    projects: '**/Azure.Iot.Edge.Modules.SecureAccess.csproj'
     arguments: '-c Release -o out'
     zipAfterPublish: false
