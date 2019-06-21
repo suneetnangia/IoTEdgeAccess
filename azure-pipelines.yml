@@ -6,9 +6,7 @@ stages:
 - stage: Build
   jobs:
   - job: Build
-    trigger:
-    - master
-
+      
     pool:
       vmImage: 'ubuntu-latest'
 
