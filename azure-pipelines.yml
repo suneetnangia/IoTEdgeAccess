@@ -31,3 +31,18 @@ stages:
         projects: '**/Azure.Iot.Edge.Modules.SecureAccess.csproj'
         arguments: '-c Release -o out'
         zipAfterPublish: false
+
+- stage: Deploy
+  dependsOn:
+  - Build
+  jobs:
+  - job: Deploy
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'SEDataHubRegistry'
+        repository: 'ot-edge-modules-secureaccess-release'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
