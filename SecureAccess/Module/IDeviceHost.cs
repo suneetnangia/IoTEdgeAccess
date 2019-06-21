@@ -1,11 +1,12 @@
 ﻿namespace Azure.Iot.Edge.Modules.SecureAccess.Module
 {
+    using Azure.Iot.Edge.Modules.SecureAccess.Device;
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
-
-    internal interface IDeviceHost
+    internal interface IDeviceHost : IDisposable
     {
-        Task OpenConnectionAsync(CancellationTokenSource cts);
+        Task OpenConnectionAsync(IClientWebSocket clientWebSocket, ITCPClient tcpClient, CancellationTokenSource cts);
     }
 }

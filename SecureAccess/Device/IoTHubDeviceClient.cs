@@ -33,5 +33,10 @@
         {
             return this.deviceClient.SetMethodHandlerAsync(methodName, methodHandler, userContext);
         }
+
+        public void Dispose()
+        {
+            this.deviceClient.Dispose();
+        }
     }
 }

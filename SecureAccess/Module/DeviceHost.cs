@@ -6,45 +6,38 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Base class to host virtual device and act as a module of its own in IoT Edge environment.
-    /// Features-
-    /// 1. Streaming Session TTL 
-    /// 2. Device Isolation
+    /// Base class to host a virtual device and act as a module of its own in IoT Edge environment.    
     /// </summary>
-    internal abstract class DeviceHost : IDeviceHost
+    public abstract class DeviceHost : IDeviceHost
     {
-        private readonly IStreamingDevice streamingDevice;
+        private IStreamingDevice StreamingDevice { get; }        
 
-        internal TransportType TransportType { get; }
+        private IModuleClient IotHubModuleClient { get; }
 
-        internal DeviceHost(IStreamingDevice streamingDevice, TransportType transportType)
+        public DeviceHost(IModuleClient moduleClient, IStreamingDevice streamingDevice)
         {
-            this.streamingDevice = streamingDevice;
-            this.TransportType = transportType;
+            this.IotHubModuleClient = moduleClient;
+            this.StreamingDevice = streamingDevice;
         }
 
-        public async Task OpenConnectionAsync(CancellationTokenSource cts)
-        {
-            ITransportSettings[] settings = { new AmqpTransportSettings(this.TransportType) };
+        public async Task OpenConnectionAsync(IClientWebSocket clientWebSocket, ITCPClient tcpClient, CancellationTokenSource cts)
+        {            
+            // Open a connection to the Edge runtime                        
+            await this.IotHubModuleClient.OpenAsync().ConfigureAwait(false);
 
-            // Open a connection to the Edge runtime
-            using (var ioTHubModuleClient = await ModuleClient.CreateFromEnvironmentAsync(settings).ConfigureAwait(false))
-            {
-                await ioTHubModuleClient.OpenAsync().ConfigureAwait(false);
+            // Register callback to be called when a message is received by the module
+            await this.IotHubModuleClient.SetInputMessageHandlerAsync("input1", this.PipeMessage, this.IotHubModuleClient, cts.Token).ConfigureAwait(false);
 
-                // Register callback to be called when a message is received by the module
-                await ioTHubModuleClient.SetInputMessageHandlerAsync("input1", this.PipeMessage, ioTHubModuleClient, cts.Token).ConfigureAwait(false);
-            }
 
             // Run a virtual device.
-            await this.RunDevice(cts).ConfigureAwait(false);
+            await this.StreamingDevice.OpenConnectionAsync(clientWebSocket, tcpClient, cts).ConfigureAwait(false);
         }
 
         internal abstract Task<MessageResponse> PipeMessage(Message message, object userContext);
 
-        internal async Task RunDevice(CancellationTokenSource cts)
+        public void Dispose()
         {
-            await this.streamingDevice.OpenConnectionAsync(cts).ConfigureAwait(false);
+            this.StreamingDevice.Dispose();
         }
     }
 }

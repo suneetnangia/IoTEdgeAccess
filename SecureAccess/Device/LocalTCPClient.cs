@@ -21,5 +21,10 @@
         {
             return new LocalNetworkStream(this.tcpClient.GetStream());
         }
+
+        public void Dispose()
+        {
+            this.tcpClient.Dispose();
+        }
     }
 }

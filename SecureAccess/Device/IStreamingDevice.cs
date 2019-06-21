@@ -1,12 +1,12 @@
 ﻿namespace Azure.Iot.Edge.Modules.SecureAccess.Device
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
-    internal interface IStreamingDevice
+    public interface IStreamingDevice : IDisposable
     {
-        Task OpenConnectionAsync(CancellationTokenSource cancellationTokenSource);
-        Task ConfigureDirectMethods();
+        Task OpenConnectionAsync(IClientWebSocket clientWebSocket, ITCPClient tcpClient, CancellationTokenSource cancellationTokenSource);        
 
         string HostName { get; }
         int Port { get; }

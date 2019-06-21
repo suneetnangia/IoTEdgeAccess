@@ -7,14 +7,19 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    internal class PassThroughDeviceHost : DeviceHost
+    public class PassThroughDeviceHost : DeviceHost
     {
-        internal PassThroughDeviceHost(IStreamingDevice streamingDevice)
-            : base(streamingDevice, TransportType.Amqp_Tcp_Only)
-        {
-            streamingDevice.ConfigureDirectMethods();
+        public PassThroughDeviceHost(IModuleClient moduleClient, IStreamingDevice streamingDevice)
+            : base(moduleClient, streamingDevice)
+        {            
         }
 
+        /// <summary>
+        /// This method pass through the message receieved.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="userContext"></param>
+        /// <returns></returns>
         internal override async Task<MessageResponse> PipeMessage(Message message, object userContext)
         {
             var moduleClient = userContext as ModuleClient;

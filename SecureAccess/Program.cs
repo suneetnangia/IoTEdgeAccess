@@ -11,46 +11,55 @@ namespace Azure.Iot.Edge.Modules.SecureAccess
 
     internal class Program
     {
+        private const string targetPortKey = "targetPort";
+
         private static async Task Main()
         {
-            // Wait until the app unloads or is cancelled by external triggers, use it for exception scnearios only.
+            // Wait until the app unloads or is cancelled by external triggers, use it for exceptional scnearios only.
             using (var cts = new CancellationTokenSource())
             {
                 AssemblyLoadContext.Default.Unloading += (ctx) => cts.Cancel();
                 Console.CancelKeyPress += (sender, cpe) => cts.Cancel();
-
-                // Devices should be injected in module and shutdown and have a sliding window on allocated time basis using interfaces.
-                // Module could run those devices in isolation using AssemblyLoadContext for higher security.
-
-                // Bootstrap devices and services.
-                string targetPortKey = "targetPort";
 
                 if (!int.TryParse(Environment.GetEnvironmentVariable(targetPortKey), out var targetPort))
                 {
                     throw new ArgumentOutOfRangeException(targetPortKey, "Could not convert port number to integer.");
                 }
 
-                // Bootstrap services.
+                // Bootstrap modules and virtual devices.
                 var services = new ServiceCollection();
 
-                services.AddTransient<IDeviceHost, DeviceHost>(isvc => new PassThroughDeviceHost(new SecureShell(
-                                                                new IoTHubDeviceClient(Environment.GetEnvironmentVariable("deviceConnectionString")),
-                                                                new IoTHubClientWebSocket(),
-                                                                new LocalTCPClient(),
-                                                                Environment.GetEnvironmentVariable("targetHost"),
-                                                                targetPort)));
+                services.AddTransient<IDeviceHost, PassThroughDeviceHost>(isvc => 
+                                    new PassThroughDeviceHost(new IotHubModuleClient(Environment.GetEnvironmentVariable("EdgeHubConnectionString")),
+                                    new SecureShell(new IoTHubDeviceClient(Environment.GetEnvironmentVariable("deviceConnectionString")), 
+                                    Environment.GetEnvironmentVariable("targetHost"),targetPort)));
 
-                // Dispose method of ServiceProvider will dispose all objects constructed by it as well.
+                // Dispose method of ServiceProvider will dispose all disposable objects constructed by it as well.
                 using (var serviceProvider = services.BuildServiceProvider())
                 {
-                    // Keep on looking for the new streams on IoT Hub when the previous one closes or aborts.
-                    // This needs to be pulled up the stack as well.
-                    var module = serviceProvider.GetService<IDeviceHost>();
-
-                    while (!cts.Token.IsCancellationRequested)
+                    // Get a new module.
+                    using (var module = serviceProvider.GetService<IDeviceHost>())
                     {
-                        // Run module
-                        await module.OpenConnectionAsync(cts).ConfigureAwait(false);
+                        // Keep on looking for the new streams on IoT Hub when the previous one closes or aborts.                        
+                        while (!cts.IsCancellationRequested)
+                        {
+                            using (var webSocket = new IoTHubClientWebSocket())
+                            {
+                                try
+                                {
+                                    using (var tcpClient = new LocalTCPClient())
+                                    {
+                                        // Run module
+                                        Console.WriteLine("Initiating open connection...");
+                                        await module.OpenConnectionAsync(webSocket, tcpClient, cts).ConfigureAwait(false);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine($"{ex.Message}");
+                                }
+                            }
+                        }
                     }
                 }
 
