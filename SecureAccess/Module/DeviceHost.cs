@@ -20,7 +20,7 @@
             this.StreamingDevice = streamingDevice;
         }
 
-        public async Task OpenConnectionAsync(IClientWebSocket clientWebSocket, ITCPClient tcpClient, CancellationTokenSource cts)
+        public async Task OpenConnectionAsync(IClientWebSocket clientWebSocket, ITcpClient tcpClient, CancellationTokenSource cts)
         {            
             // Open a connection to the Edge runtime                        
             await this.IotHubModuleClient.OpenAsync().ConfigureAwait(false);

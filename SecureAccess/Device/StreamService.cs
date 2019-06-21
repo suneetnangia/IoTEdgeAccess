@@ -34,7 +34,7 @@
         /// </summary>
         public int Port { get; }        
 
-        public async Task OpenConnectionAsync(IClientWebSocket clientWebSocket, ITCPClient tcpClient, CancellationTokenSource cancellationTokenSource)
+        public async Task OpenConnectionAsync(IClientWebSocket clientWebSocket, ITcpClient tcpClient, CancellationTokenSource cancellationTokenSource)
         {
             DeviceStreamRequest streamRequest = await this.DeviceClient.WaitForDeviceStreamRequestAsync(cancellationTokenSource.Token).ConfigureAwait(false);
 

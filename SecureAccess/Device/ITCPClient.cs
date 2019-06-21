@@ -3,7 +3,7 @@
     using System;
     using System.Threading.Tasks;
 
-    public interface ITCPClient : IDisposable
+    public interface ITcpClient : IDisposable
     {
         Task ConnectAsync(string host, int port);
 

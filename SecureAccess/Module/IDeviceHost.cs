@@ -7,6 +7,6 @@
 
     internal interface IDeviceHost : IDisposable
     {
-        Task OpenConnectionAsync(IClientWebSocket clientWebSocket, ITCPClient tcpClient, CancellationTokenSource cts);
+        Task OpenConnectionAsync(IClientWebSocket clientWebSocket, ITcpClient tcpClient, CancellationTokenSource cts);
     }
 }

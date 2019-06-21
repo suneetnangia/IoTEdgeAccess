@@ -21,7 +21,7 @@ namespace Azure.Iot.Edge.Modules.SecureAccess.Tests
 
         private Mock<IDeviceClient> deviceClientMock;
         private Mock<IClientWebSocket> clientWebSocket;
-        private Mock<ITCPClient> tcpClient;
+        private Mock<ITcpClient> tcpClient;
         private Mock<INetworkStream> networkStream;
         private ClientWebSocket realClientWebSocket;
         private CancellationTokenSource cancellationTokenSource;
@@ -36,7 +36,7 @@ namespace Azure.Iot.Edge.Modules.SecureAccess.Tests
         {
             this.deviceClientMock = new Mock<IDeviceClient>();
             this.clientWebSocket = new Mock<IClientWebSocket>();
-            this.tcpClient = new Mock<ITCPClient>();
+            this.tcpClient = new Mock<ITcpClient>();
             this.networkStream = new Mock<INetworkStream>();
             this.realClientWebSocket = new ClientWebSocket();
             this.cancellationTokenSource = new CancellationTokenSource();

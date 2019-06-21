@@ -3,7 +3,7 @@
     using System.Net.Sockets;
     using System.Threading.Tasks;
 
-    public class LocalTCPClient : ITCPClient
+    public class LocalTCPClient : ITcpClient
     {
         private readonly TcpClient tcpClient;
 

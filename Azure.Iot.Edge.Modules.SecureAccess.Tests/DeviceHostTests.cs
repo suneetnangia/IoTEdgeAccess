@@ -4,7 +4,7 @@ namespace Azure.Iot.Edge.Modules.SecureAccess.Tests
     using System.Threading.Tasks;
 
     [TestClass]
-    public class StreamModuleTests
+    public class DeviceHostTests
     {
         [TestInitialize]
         public void Setup()
