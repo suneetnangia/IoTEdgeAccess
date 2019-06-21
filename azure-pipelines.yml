@@ -23,3 +23,10 @@ steps:
     command: 'test'
     projects: '**/*Tests*.csproj'
     testRunTitle: 'Unit Tests'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: 'Azure.Iot.Edge.Modules.SecureAccess.csproj'
+    arguments: '-c Release -o out'
+    zipAfterPublish: false
