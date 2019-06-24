@@ -45,4 +45,4 @@ stages:
         containerRegistry: 'SEDataHubRegistry'
         repository: 'ot-edge-modules-secureaccess-release'
         command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile'
+        Dockerfile: '**/Dockerfile.arm32v7.cicd'
