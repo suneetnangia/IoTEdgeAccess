@@ -17,25 +17,21 @@ stages:
         version: '2.2.300'
     - task: DotNetCoreCLI@2
       inputs:
-        command: 'build'
-        projects: '**/*.csproj'
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'test'
-        projects: '**/*Tests*.csproj'
-        testRunTitle: 'Unit Tests'
-    - task: DotNetCoreCLI@2
-      inputs:
         command: 'publish'
         publishWebProjects: false
         projects: '**/Azure.Iot.Edge.Modules.SecureAccess.csproj'
         arguments: '-c Release -o $(Build.ArtifactStagingDirectory)'
         zipAfterPublish: false
-    - task: PublishBuildArtifacts@1
+    - task: DotNetCoreCLI@2
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
+        command: 'test'
+        projects: '**/*Tests*.csproj'
+        testRunTitle: 'Unit Tests'
+    # - task: PublishBuildArtifacts@1
+    #   inputs:
+    #     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    #     ArtifactName: 'drop'
+    #     publishLocation: 'Container'
 - stage: Deploy
   dependsOn:
   - Build
@@ -50,4 +46,4 @@ stages:
         repository: 'iot-edge-modules-secureaccess-ARM32v7-release'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile.arm32v7.cicd'
-        buildContext: $(Build.ArtifactStagingDirectory)
+        buildContext: '$(Build.ArtifactStagingDirectory)'
