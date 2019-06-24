@@ -21,7 +21,7 @@ stages:
         command: 'publish'
         publishWebProjects: false
         projects: '**/Azure.Iot.Edge.Modules.SecureAccess.csproj'
-        arguments: '-c Release -o $(Build.ArtifactStagingDirectory)'
+        arguments: '-c Release -o published'
         zipAfterPublish: false
     - task: DotNetCoreCLI@2
       displayName: 'Unit Tests'
@@ -43,4 +43,4 @@ stages:
         repository: 'iot-edge-modules-secureaccess-ARM32v7-release'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile.arm32v7.cicd'
-        buildContext: '$(Build.ArtifactStagingDirectory)'
+        buildContext: '**'
