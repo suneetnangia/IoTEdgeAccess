@@ -10,5 +10,8 @@ Features-
 2. Auditing.
 3. Secure Access via Device Stream.
 
+Surface Attack Area-
+1. IoT Hub Access
+
 To learn more about device stream feature, see here-
 https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-device-streams-overview
