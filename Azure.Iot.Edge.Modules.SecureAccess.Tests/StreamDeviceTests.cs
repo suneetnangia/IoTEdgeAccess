@@ -74,7 +74,7 @@ namespace Azure.Iot.Edge.Modules.SecureAccess.Tests
             this.realClientWebSocket.Dispose();
             this.cancellationTokenSource.Dispose();
         }
-              
+
 
         [TestMethod]
         public async Task CanAcceptDeviceStreamRequest()
@@ -84,7 +84,7 @@ namespace Azure.Iot.Edge.Modules.SecureAccess.Tests
             {
                 // Act
                 await secureShellDevice.OpenConnectionAsync(this.clientWebSocket.Object, this.tcpClient.Object, this.cancellationTokenSource);
-             }
+            }
 
             // Assert
             this.deviceClientMock.Verify(dc => dc.AcceptDeviceStreamRequestAsync(this.deviceStreamRequest, this.cancellationTokenSource.Token), Times.Once);
@@ -117,7 +117,7 @@ namespace Azure.Iot.Edge.Modules.SecureAccess.Tests
             // Assert
             this.tcpClient.Verify(tc => tc.GetStream(), Times.Once);
             this.clientWebSocket.Verify(cws => cws.ReceiveAsync(this.buffer, this.cancellationTokenSource.Token), Times.Once);
-            this.networkStream.Verify(ns => ns.WriteAsync(this.buffer, 0, streamReturnValue), Times.Once);
+            this.networkStream.Verify(ns => ns.WriteAsync(this.buffer, 0, streamReturnValue, this.cancellationTokenSource.Token), Times.Once);
         }
 
         [TestMethod]
@@ -132,7 +132,7 @@ namespace Azure.Iot.Edge.Modules.SecureAccess.Tests
 
             // Assert
             this.tcpClient.Verify(tc => tc.GetStream(), Times.Once);
-            this.networkStream.Verify(ns => ns.ReadAsync(It.IsAny<byte[]>(), 0, bufferSize), Times.Once);
+            this.networkStream.Verify(ns => ns.ReadAsync(It.IsAny<byte[]>(), 0, bufferSize, this.cancellationTokenSource.Token), Times.Once);
             this.clientWebSocket.Verify(cws => cws.SendAsync(It.IsAny<ArraySegment<byte>>(), WebSocketMessageType.Binary, true, this.cancellationTokenSource.Token), Times.Once);
         }
     }
