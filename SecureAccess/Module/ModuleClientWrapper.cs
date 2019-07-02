@@ -12,10 +12,10 @@
 
         public ModuleClientWrapper(string connectionString)
         {
+            // Root Cert available at environment variable ["EdgeModuleCACertificateFile"] 
+            // which needs manual adding in dev env if CreateFromEnvironmentAsync is not used.
             var amqpsettings = new AmqpTransportSettings(TransportType.Amqp_Tcp_Only);
-            amqpsettings.RemoteCertificateValidationCallback = new RemoteCertificateValidationCallback(ValidateServerCertificate);
             this.moduleClient = ModuleClient.CreateFromConnectionString(connectionString, new ITransportSettings[] { amqpsettings });
-            // this.moduleClient = ModuleClient.CreateFromEnvironmentAsync().GetAwaiter().GetResult();
         }
 
         public Task OpenAsync()
@@ -36,20 +36,6 @@
         public Task SetMethodHandlerAsync(string methodName, MethodCallback methodHandler, object userContext)
         {
             return this.moduleClient.SetMethodHandlerAsync(methodName, methodHandler, userContext);
-        }
-
-        // The following method is invoked by the RemoteCertificateValidationDelegate.
-        public static bool ValidateServerCertificate(
-              object sender,
-              X509Certificate certificate,
-              X509Chain chain,
-              SslPolicyErrors sslPolicyErrors)
-        {
-            if (sslPolicyErrors == SslPolicyErrors.None)
-                return true;
-
-            // TODO: This needs to be fixed.
-            return true;
         }
 
         public void Dispose()
