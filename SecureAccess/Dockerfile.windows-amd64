@@ -10,4 +10,4 @@ RUN dotnet publish -c Release -o out
 FROM microsoft/dotnet:2.1-runtime-nanoserver-1809
 WORKDIR /app
 COPY --from=build-env /app/out ./
-ENTRYPOINT ["dotnet", "SecureAccess.dll"]
+ENTRYPOINT ["dotnet", "Azure.Iot.Edge.Modules.SecureAccess.dll"]

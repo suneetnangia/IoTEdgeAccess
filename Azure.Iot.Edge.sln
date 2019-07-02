@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{34036844-64E7-43A5-9151-4AD90E180989}") = "Azure.Iot.Edge.Modules", "Azure.Iot.Edge.Modules\Azure.Iot.Edge.Modules.iotedgeproj", "{F4396CEF-A271-4305-B145-276BD1057F14}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Azure.Iot.Edge.Modules.SecureAccess", "Azure.Iot.Edge.Modules.SecureAccess\Azure.Iot.Edge.Modules.SecureAccess.csproj", "{1C2A1A93-0408-4459-B8A7-CD5D8A7B8984}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Azure.Iot.Edge.Modules.SecureAccess", "SecureAccess\Azure.Iot.Edge.Modules.SecureAccess.csproj", "{1C2A1A93-0408-4459-B8A7-CD5D8A7B8984}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azure.Iot.Edge.Modules.SecureAccess.Tests", "Azure.Iot.Edge.Modules.SecureAccess.Tests\Azure.Iot.Edge.Modules.SecureAccess.Tests.csproj", "{5BF28F0D-DCAD-485B-ACBE-6AC72E27C738}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Azure.Iot.Edge.Modules.SecureAccess.Tests", "Azure.Iot.Edge.Modules.SecureAccess.Tests\Azure.Iot.Edge.Modules.SecureAccess.Tests.csproj", "{5BF28F0D-DCAD-485B-ACBE-6AC72E27C738}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

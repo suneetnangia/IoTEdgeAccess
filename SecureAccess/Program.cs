@@ -5,6 +5,7 @@ namespace Azure.Iot.Edge.Modules.SecureAccess
     using Microsoft.Extensions.DependencyInjection;
 
     using System;
+    using System.Net.WebSockets;
     using System.Runtime.Loader;
     using System.Threading;
     using System.Threading.Tasks;
@@ -23,16 +24,17 @@ namespace Azure.Iot.Edge.Modules.SecureAccess
 
                 if (!int.TryParse(Environment.GetEnvironmentVariable(targetPortKey), out var targetPort))
                 {
-                    throw new ArgumentOutOfRangeException(targetPortKey, "Could not convert port number to integer.");
+                    throw new ArgumentOutOfRangeException(targetPortKey,
+                                                          "Could not convert port number to integer.");
                 }
 
                 // Bootstrap modules and virtual devices.
                 var services = new ServiceCollection();
 
-                services.AddTransient<IDeviceHost, PassThroughDeviceHost>(isvc => 
-                                    new PassThroughDeviceHost(new IotHubModuleClient(Environment.GetEnvironmentVariable("EdgeHubConnectionString")),
-                                    new SecureShell(new IoTHubDeviceClient(Environment.GetEnvironmentVariable("deviceConnectionString")), 
-                                    Environment.GetEnvironmentVariable("targetHost"),targetPort)));
+                services.AddTransient<IDeviceHost, PureDeviceHost>(isvc =>
+                                    new PureDeviceHost(new ModuleClientWrapper(Environment.GetEnvironmentVariable("EdgeHubConnectionString")),
+                                    new SecureShell(new DeviceClientWrapper(Environment.GetEnvironmentVariable("deviceConnectionString")),
+                                    Environment.GetEnvironmentVariable("targetHost"), targetPort)));
 
                 // Dispose method of ServiceProvider will dispose all disposable objects constructed by it as well.
                 using (var serviceProvider = services.BuildServiceProvider())
@@ -43,21 +45,24 @@ namespace Azure.Iot.Edge.Modules.SecureAccess
                         // Keep on looking for the new streams on IoT Hub when the previous one closes or aborts.                        
                         while (!cts.IsCancellationRequested)
                         {
-                            using (var webSocket = new IoTHubClientWebSocket())
+                            try
                             {
-                                try
+                                using (var webSocket = new ClientWebSocketWrapper())
                                 {
-                                    using (var tcpClient = new LocalTCPClient())
+                                    using (var tcpClient = new TcpClientWrapper())
                                     {
                                         // Run module
                                         Console.WriteLine("Initiating open connection...");
                                         await module.OpenConnectionAsync(webSocket, tcpClient, cts).ConfigureAwait(false);
                                     }
+
+                                    await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, String.Empty, cts.Token).ConfigureAwait(false);
+                                    Console.WriteLine($"Device stream closed to remote websocket endpoint, at {DateTime.UtcNow}");
                                 }
-                                catch (Exception ex)
-                                {
-                                    Console.WriteLine($"{ex.Message}");
-                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"{ex.Message}");
                             }
                         }
                     }

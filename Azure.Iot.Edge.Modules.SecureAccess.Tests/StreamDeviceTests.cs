@@ -6,6 +6,7 @@ namespace Azure.Iot.Edge.Modules.SecureAccess.Tests
 
     using Moq;
     using System;
+    using System.IO;
     using System.Net.WebSockets;
     using System.Threading;
     using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace Azure.Iot.Edge.Modules.SecureAccess.Tests
         private Mock<IDeviceClient> deviceClientMock;
         private Mock<IClientWebSocket> clientWebSocket;
         private Mock<ITcpClient> tcpClient;
-        private Mock<INetworkStream> networkStream;
+        private Mock<Stream> networkStream;
         private ClientWebSocket realClientWebSocket;
         private CancellationTokenSource cancellationTokenSource;
 
@@ -37,7 +38,7 @@ namespace Azure.Iot.Edge.Modules.SecureAccess.Tests
             this.deviceClientMock = new Mock<IDeviceClient>();
             this.clientWebSocket = new Mock<IClientWebSocket>();
             this.tcpClient = new Mock<ITcpClient>();
-            this.networkStream = new Mock<INetworkStream>();
+            this.networkStream = new Mock<Stream>();
             this.realClientWebSocket = new ClientWebSocket();
             this.cancellationTokenSource = new CancellationTokenSource();
 
@@ -57,10 +58,10 @@ namespace Azure.Iot.Edge.Modules.SecureAccess.Tests
             this.tcpClient.Setup(tc => tc.ConnectAsync(localhost, localPort)).Returns(Task.FromResult(0));
             this.tcpClient.Setup(tc => tc.GetStream()).Returns(this.networkStream.Object);
 
-            this.networkStream.Setup(ns => ns.WriteAsync(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(0));
+            this.networkStream.Setup(ns => ns.WriteAsync(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>(), this.cancellationTokenSource.Token)).Returns(Task.FromResult(0));
             this.networkStream.Setup(ns => ns.CanRead).Returns(() => { this.toggleStateNetworkStream = !this.toggleStateNetworkStream; return this.toggleStateNetworkStream ? true : false; });
 
-            this.networkStream.Setup(ns => ns.ReadAsync(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync((byte[] r, int o, int s) =>
+            this.networkStream.Setup(ns => ns.ReadAsync(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>(), this.cancellationTokenSource.Token)).ReturnsAsync((byte[] r, int o, int s, CancellationToken cts) =>
                                         {
                                             r[0] = 1;
                                             return streamReturnValue;

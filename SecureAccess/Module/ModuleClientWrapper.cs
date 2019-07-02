@@ -6,15 +6,14 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    public class IotHubModuleClient : IModuleClient
+    public class ModuleClientWrapper : IModuleClient
     {
         private readonly ModuleClient moduleClient;
 
-        public IotHubModuleClient(string connectionString)
+        public ModuleClientWrapper(string connectionString)
         {
             var amqpsettings = new AmqpTransportSettings(TransportType.Amqp_Tcp_Only);
             amqpsettings.RemoteCertificateValidationCallback = new RemoteCertificateValidationCallback(ValidateServerCertificate);
-
             this.moduleClient = ModuleClient.CreateFromConnectionString(connectionString, new ITransportSettings[] { amqpsettings });
             // this.moduleClient = ModuleClient.CreateFromEnvironmentAsync().GetAwaiter().GetResult();
         }
@@ -32,7 +31,7 @@
         public Task SetInputMessageHandlerAsync(string inputName, MessageHandler messageHandler, object userContext, CancellationToken cancellationToken)
         {
             return this.moduleClient.SetInputMessageHandlerAsync(inputName, messageHandler, userContext, cancellationToken);
-        }        
+        }
 
         public Task SetMethodHandlerAsync(string methodName, MethodCallback methodHandler, object userContext)
         {

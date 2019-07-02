@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.1-runtime-stretch-slim-arm32v7 AS base
+FROM microsoft/dotnet:2.1-runtime-stretch-slim AS base
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends unzip procps && \
@@ -21,4 +21,4 @@ FROM base
 WORKDIR /app
 COPY --from=build-env /app/out ./
 
-ENTRYPOINT ["dotnet", "SecureAccess.dll"]
+ENTRYPOINT ["dotnet", "Azure.Iot.Edge.Modules.SecureAccess.dll"]

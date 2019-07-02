@@ -6,7 +6,7 @@
 
     public interface IStreamingDevice : IDisposable
     {
-        Task OpenConnectionAsync(IClientWebSocket clientWebSocket, ITcpClient tcpClient, CancellationTokenSource cancellationTokenSource);        
+        Task OpenConnectionAsync(IClientWebSocket clientWebSocket, ITcpClient tcpClient, CancellationTokenSource cancellationTokenSource);
 
         string HostName { get; }
         int Port { get; }
