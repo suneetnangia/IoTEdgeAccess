@@ -42,5 +42,5 @@ stages:
         containerRegistry: 'SEDataHubRegistry'
         repository: 'iot-edge-modules-secureaccess-ARM32v7-release'
         command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile.arm32v7.cicd'
+        Dockerfile: '**/Dockerfile.amd64.cicd'
         buildContext: '**'
