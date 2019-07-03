@@ -11,7 +11,8 @@ Features-
 3. Secure Access via Device Stream.
 
 Surface Attack Area-
-1. IoT Hub Access
+In this instance access to your Edge device is delegated to IoT Hub. It is therefore important to ensure you take care before granting service connect access permission to any clients, follow a principle of least prevlidge.
+
 
 To learn more about device stream feature, see here-
 https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-device-streams-overview
