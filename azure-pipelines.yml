@@ -39,10 +39,9 @@ stages:
     steps:
     - task: Docker@2
       inputs:
-        containerRegistry: 'SEDataHubRegistry'
+        containerRegistry: 'Suneet Nangia Public Docker Hub'
         repository: 'Azure IoT Edge Secure Access'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile.amd64.cicd'
-        tags: 'Linux
-              $(Build.BuildId)'
+        tags: '$(Build.BuildId)'
         buildContext: '**'
