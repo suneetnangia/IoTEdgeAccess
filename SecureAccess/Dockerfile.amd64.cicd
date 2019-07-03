@@ -1,0 +1,8 @@
+FROM microsoft/dotnet:2.2-runtime-stretch-slim
+WORKDIR /app
+COPY ** ./
+
+RUN useradd -ms /bin/bash moduleuser
+USER moduleuser
+
+ENTRYPOINT ["dotnet", "Azure.Iot.Edge.Modules.SecureAccess.dll"]
