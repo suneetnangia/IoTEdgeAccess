@@ -33,15 +33,27 @@ stages:
   dependsOn:
   - Build
   jobs:
-  - job: Deploy
+  - job: Linux_Image_Deploy
     pool:
       vmImage: 'ubuntu-latest'
     steps:
     - task: Docker@2
       inputs:
         containerRegistry: 'Suneet Nangia Public Docker Hub'
-        repository: 'suneetnangia/azure-iot-edge-secure-access'
+        repository: 'suneetnangia/azure-iot-edge-secure-access-linux64'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile.amd64.cicd'
+        tags: '$(Build.BuildId)'
+        buildContext: '**'
+  - job: Windows_Image_Deploy
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Suneet Nangia Public Docker Hub'
+        repository: 'suneetnangia/azure-iot-edge-secure-access-win64'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile.windows-amd64.cicd'
         tags: '$(Build.BuildId)'
         buildContext: '**'
