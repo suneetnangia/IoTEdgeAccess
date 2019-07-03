@@ -40,7 +40,9 @@ stages:
     - task: Docker@2
       inputs:
         containerRegistry: 'SEDataHubRegistry'
-        repository: 'iot-edge-modules-secureaccess-ARM32v7-release'
+        repository: 'Azure IoT Edge Secure Access'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile.amd64.cicd'
+        tags: 'Linux
+              $(Build.BuildId)'
         buildContext: '**'
