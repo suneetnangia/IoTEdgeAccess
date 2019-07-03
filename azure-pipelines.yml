@@ -43,5 +43,5 @@ stages:
         repository: 'suneetnangia/azure-iot-edge-secure-access'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile.amd64.cicd'
-        tags: '$(Build.BuildId),Linux'
+        tags: '$(Build.BuildId)'
         buildContext: '**'
