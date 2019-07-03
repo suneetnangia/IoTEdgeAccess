@@ -3,7 +3,6 @@ namespace Azure.Iot.Edge.Modules.SecureAccess
     using Azure.Iot.Edge.Modules.SecureAccess.Device;
     using Azure.Iot.Edge.Modules.SecureAccess.Module;
     using Microsoft.Extensions.DependencyInjection;
-
     using System;
     using System.Net.WebSockets;
     using System.Runtime.Loader;
