@@ -40,7 +40,7 @@ stages:
     - task: Docker@2
       inputs:
         containerRegistry: 'Suneet Nangia Public Docker Hub'
-        repository: 'Azure IoT Edge Secure Access'
+        repository: 'azure-iot-edge-secure-access'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile.amd64.cicd'
         tags: '$(Build.BuildId)'
