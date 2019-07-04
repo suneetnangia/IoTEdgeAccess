@@ -1,7 +1,6 @@
 FROM microsoft/dotnet:2.2-runtime-stretch-slim
 WORKDIR /app
 COPY ** ./
-COPY qemu-arm-static /usr/bin
 
 RUN useradd -ms /bin/bash moduleuser
 USER moduleuser
