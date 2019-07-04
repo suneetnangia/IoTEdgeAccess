@@ -65,27 +65,27 @@ stages:
         Dockerfile: '**/Dockerfile.arm32v7.cicd'
         tags: '$(Build.BuildId)-arm32v7'
         buildContext: '**'
-  # - job: Linux_Image_Deploy
-  #   pool:
-  #     vmImage: 'ubuntu-latest'
-  #   steps:
-  #   - task: Docker@2
-  #     inputs:
-  #       containerRegistry: 'Suneet Nangia Public Docker Hub'
-  #       repository: 'suneetnangia/azure-iot-edge-secure-access'
-  #       command: 'buildAndPush'
-  #       Dockerfile: '**/Dockerfile.amd64.cicd'
-  #       tags: '$(Build.BuildId)-linux64'
-  #       buildContext: '**'
-  # - job: Windows_Image_Deploy
-  #   pool:
-  #     vmImage: 'windows-2019'
-  #   steps:
-  #   - task: Docker@2
-  #     inputs:
-  #       containerRegistry: 'Suneet Nangia Public Docker Hub'
-  #       repository: 'suneetnangia/azure-iot-edge-secure-access'
-  #       command: 'buildAndPush'
-  #       Dockerfile: '**/Dockerfile.windows-amd64.cicd'
-  #       tags: '$(Build.BuildId)-win64'
-  #       buildContext: '**'
+  - job: Linux_Image_Deploy
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Suneet Nangia Public Docker Hub'
+        repository: 'suneetnangia/azure-iot-edge-secure-access'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile.amd64.cicd'
+        tags: '$(Build.BuildId)-linux64'
+        buildContext: '**'
+  - job: Windows_Image_Deploy
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Suneet Nangia Public Docker Hub'
+        repository: 'suneetnangia/azure-iot-edge-secure-access'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile.windows-amd64.cicd'
+        tags: '$(Build.BuildId)-win64'
+        buildContext: '**'
