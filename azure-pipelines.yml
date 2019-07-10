@@ -27,7 +27,7 @@ stages:
         command: 'publish'
         publishWebProjects: false
         projects: '**/Azure.Iot.Edge.Modules.SecureAccess.csproj'
-        arguments: '-c Release -v n -o $(Build.ArtifactStagingDirectory)/published'
+        arguments: '-c Release -v n -o $(Build.ArtifactStagingDirectory)'
         zipAfterPublish: false
     - task: DotNetCoreCLI@2
       displayName: 'Unit Tests'
@@ -79,7 +79,7 @@ stages:
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile.amd64.cicd'
         tags: '$(Build.BuildId)-linux64'
-        buildContext: '$(Build.ArtifactStagingDirectory)/published'
+        buildContext: '$(Build.ArtifactStagingDirectory)'
   # - job: Windows_Image_Deploy
   #   pool:
   #     vmImage: 'windows-2019'
