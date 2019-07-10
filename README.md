@@ -6,21 +6,23 @@ This is a solution for IoT Edge module which allows remote access by using devic
 ![solution design](./Architecture/EdgeAccess.JPG)
 
 Features-
-1. JIT Access.
+1. JIT (Just in Time) Access.
 2. Auditing.
 3. Secure Access via Device Stream.
 
 Surface Attack Area-
-In this instance access to your Edge device is delegated to IoT Hub. It is therefore important to ensure you take care before granting service connect access permission to any clients, follow a principle of least prevlidge.
+In this instance access to your Edge device is delegated to IoT Hub which is a secure control plane managed in Azure. It is therefore important to ensure you take care before granting service connect access permission to any clients, follow a principle of least prevlidge. You can disable the device connectivity to IoT Hub which will disable the connectivity further reducing the surface attack area.  
 
 Why hosting virtual devices in a module?
 Hosting a device virtually in a module has some benefits which can be useful in edge scenarios.
 
-1. You can host multiple virtual devices/protocols in a single module with lower resource (memory/cpu) footprint compared to hosting multiple modules one for each protocol (e.g. SSH, SCP, RDP)
+1. You can extend the design to host multiple virtual devices/protocols in a single module with lower resource (memory/cpu) footprint compared to hosting multiple modules one for each protocol (e.g. SSH, SCP, RDP).
 2. You do not have to expose unbounded ports on the edge, each virtual device can be restricted to a specific port, reducing surface attack area.
 3. Each virtual device can be individually turned off/on on-demand basis from IoT Hub to allow Just in Time (JIT) access, further reducing the surface attack area.
 4. Single management plane (IoT Hub) for access management.
 5. Secure reverse connect mechanism underpinned by device stream feature.
+
+Do not use this for application level connectivity which requires low latency and high throughputs, this is designed for on-demand/occasional access to the edge devices for debug or config reasons.
 
 To learn more about device stream feature, see here-
 https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-device-streams-overview
