@@ -76,7 +76,7 @@ stages:
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile.amd64.cicd'
         tags: '$(Build.BuildId)-linux64'
-        buildContext: '/home/vsts/work/1/s/SecureAccess/published/SecureAccess'
+        buildContext: '$(System.DefaultWorkingDirectory)/SecureAccess'
   # - job: Windows_Image_Deploy
   #   pool:
   #     vmImage: 'windows-2019'
