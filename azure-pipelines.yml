@@ -14,10 +14,8 @@ stages:
 - stage: Build
   jobs:
   - job: Build
-      
     pool:
       vmImage: 'ubuntu-latest'
-
     steps:
     - task: UseDotNet@2
       inputs:
