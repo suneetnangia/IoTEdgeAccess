@@ -35,6 +35,11 @@ stages:
         command: 'test'
         projects: '**/*Tests*.csproj'
         testRunTitle: 'Unit Tests'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
 - stage: Deploy
   dependsOn:
   - Build
