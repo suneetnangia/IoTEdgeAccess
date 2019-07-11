@@ -77,7 +77,7 @@ stages:
         containerRegistry: 'Suneet Nangia Public Docker Hub'
         repository: 'suneetnangia/azure-iot-edge-secure-access'
         command: 'buildAndPush'
-        Dockerfile: './Dockerfile.amd64.cicd'
+        Dockerfile: './SecureAccess/Dockerfile.amd64.cicd'
         tags: '$(Build.BuildId)-linux64'
         buildContext: '**'
   # - job: Windows_Image_Deploy
