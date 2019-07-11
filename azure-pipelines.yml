@@ -35,11 +35,11 @@ stages:
         command: 'test'
         projects: '**/*Tests*.csproj'
         testRunTitle: 'Unit Tests'
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
+    # - task: PublishBuildArtifacts@1
+    #   inputs:
+    #     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    #     ArtifactName: 'drop'
+    #     publishLocation: 'Container'
 - stage: Deploy
   dependsOn:
   - Build
@@ -79,7 +79,7 @@ stages:
         command: 'buildAndPush'
         Dockerfile: './SecureAccess/Dockerfile.amd64.cicd'
         tags: '$(Build.BuildId)-linux64'
-        buildContext: './published/SecureAccess'
+        buildContext: './published/SecureAccess/'
   # - job: Windows_Image_Deploy
   #   pool:
   #     vmImage: 'windows-2019'
