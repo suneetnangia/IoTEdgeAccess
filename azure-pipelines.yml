@@ -82,14 +82,14 @@ stages:
   #       buildContext: '$(Build.SourcesDirectory)'
       - task: DownloadPipelineArtifact@2
         inputs:
-          artifact: ModuleBinaries
+          artifact: drop
       - task: Docker@2
         inputs:
           containerRegistry: 'Suneet Nangia Public Docker Hub'
           repository: 'suneetnangia/azure-iot-edge-secure-access'
           command: 'build'
           Dockerfile: './SecureAccess/Dockerfile.amd64.cicd'
-          buildContext: '$(Build.ArtifactStagingDirectory)'
+          buildContext: '**'
           tags: '$(Build.BuildId)-linux64'
   # - job: Windows_Image_Deploy
   #   pool:
