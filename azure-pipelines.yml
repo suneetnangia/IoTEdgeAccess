@@ -35,11 +35,11 @@ stages:
     #     command: 'test'
     #     projects: '**/*Tests*.csproj'
     #     testRunTitle: 'Unit Tests'
-    # - task: PublishBuildArtifacts@1
-    #   inputs:
-    #     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    #     ArtifactName: 'drop'
-    #     publishLocation: 'Container'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
 - stage: Deploy
   dependsOn:
   - Build
@@ -80,6 +80,9 @@ stages:
   #       Dockerfile: './SecureAccess/Dockerfile.amd64.cicd'
   #       tags: '$(Build.BuildId)-linux64'
   #       buildContext: '$(Build.SourcesDirectory)'
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifact: ModuleBinaries
       - task: Docker@2
         inputs:
           containerRegistry: 'Suneet Nangia Public Docker Hub'
