@@ -86,7 +86,7 @@ stages:
           repository: 'suneetnangia/azure-iot-edge-secure-access'
           command: 'build'
           Dockerfile: './SecureAccess/Dockerfile.amd64.cicd'
-          buildContext: '$(Build.SourcesDirectory)'
+          buildContext: '$(Build.SourcesDirectory)/published'
           tags: '$(Build.BuildId)-linux64'
   # - job: Windows_Image_Deploy
   #   pool:
