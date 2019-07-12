@@ -37,7 +37,7 @@ stages:
     #     testRunTitle: 'Unit Tests'
     - task: PublishBuildArtifacts@1
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        PathtoPublish: 'published'
         ArtifactName: 'Build'
         publishLocation: 'Container'
 - stage: Deploy
