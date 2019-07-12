@@ -38,7 +38,7 @@ stages:
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop'
+        ArtifactName: 'Build'
         publishLocation: 'Container'
 - stage: Deploy
   dependsOn:
@@ -72,26 +72,18 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-  #   - task: Docker@2
-  #     inputs:
-  #       containerRegistry: 'Suneet Nangia Public Docker Hub'
-  #       repository: 'suneetnangia/azure-iot-edge-secure-access'
-  #       command: 'buildAndPush'
-  #       Dockerfile: './SecureAccess/Dockerfile.amd64.cicd'
-  #       tags: '$(Build.BuildId)-linux64'
-  #       buildContext: '$(Build.SourcesDirectory)'
-      - task: DownloadPipelineArtifact@2
-        inputs:
-          artifact: drop
-          targetPath: "$(Build.ArtifactStagingDirectory)"
-      - task: Docker@2
-        inputs:
-          containerRegistry: 'Suneet Nangia Public Docker Hub'
-          repository: 'suneetnangia/azure-iot-edge-secure-access'
-          command: 'build'
-          Dockerfile: './SecureAccess/Dockerfile.amd64.cicd'
-          buildContext: '$(Build.ArtifactStagingDirectory)'
-          tags: '$(Build.BuildId)-linux64'
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        artifact: "Build"
+        targetPath: "$(Build.ArtifactStagingDirectory)"
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Suneet Nangia Public Docker Hub'
+        repository: 'suneetnangia/azure-iot-edge-secure-access'
+        command: 'buildAndPush'
+        Dockerfile: './SecureAccess/Dockerfile.amd64.cicd'
+        tags: '$(Build.BuildId)-linux64'
+        buildContext: '$(Build.ArtifactStagingDirectory)'
   # - job: Windows_Image_Deploy
   #   pool:
   #     vmImage: 'windows-2019'
