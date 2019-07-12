@@ -37,7 +37,7 @@ stages:
     #     testRunTitle: 'Unit Tests'
     - task: PublishBuildArtifacts@1
       inputs:
-        PathtoPublish: 'published'
+        PathtoPublish: 'published/SecureAccess'
         ArtifactName: 'Build'
         publishLocation: 'Container'
 - stage: Deploy
