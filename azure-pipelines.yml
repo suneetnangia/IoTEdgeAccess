@@ -48,6 +48,10 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        artifact: "Build"
+        targetPath: "$(Build.ArtifactStagingDirectory)"
     - task: Bash@3
       inputs:
         targetType: 'inline'
@@ -88,6 +92,10 @@ stages:
     pool:
       vmImage: 'windows-2019'
     steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        artifact: "Build"
+        targetPath: "$(Build.ArtifactStagingDirectory)"
     - task: Docker@2
       inputs:
         containerRegistry: 'Suneet Nangia Public Docker Hub'
