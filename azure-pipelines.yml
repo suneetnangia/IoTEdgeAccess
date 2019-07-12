@@ -29,12 +29,12 @@ stages:
         projects: '**/Azure.Iot.Edge.Modules.SecureAccess.csproj'
         arguments: '-c Release -v n -o $(Build.SourcesDirectory)/published'
         zipAfterPublish: false
-    - task: DotNetCoreCLI@2
-      displayName: 'Unit Tests'
-      inputs:
-        command: 'test'
-        projects: '**/*Tests*.csproj'
-        testRunTitle: 'Unit Tests'
+    # - task: DotNetCoreCLI@2
+    #   displayName: 'Unit Tests'
+    #   inputs:
+    #     command: 'test'
+    #     projects: '**/*Tests*.csproj'
+    #     testRunTitle: 'Unit Tests'
     # - task: PublishBuildArtifacts@1
     #   inputs:
     #     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
