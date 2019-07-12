@@ -27,7 +27,7 @@ stages:
         command: 'publish'
         publishWebProjects: false
         projects: '**/Azure.Iot.Edge.Modules.SecureAccess.csproj'
-        arguments: '-c Release -v n -o $(Build.ArtifactStagingDirectory)/published'
+        arguments: '-c Release -v n -o published'
         zipAfterPublish: false
     # - task: DotNetCoreCLI@2
     #   displayName: 'Unit Tests'
