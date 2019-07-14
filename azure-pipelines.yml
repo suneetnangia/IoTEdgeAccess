@@ -70,7 +70,7 @@ stages:
         repository: 'suneetnangia/azure-iot-edge-secure-access'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile.arm32v7.cicd'
-        tags: 'dev-arm32v7'
+        tags: 'ci-arm32v7'
         buildContext: '$(Build.ArtifactStagingDirectory)'
   - job: Linux_Image_Deploy
     pool:
@@ -86,7 +86,7 @@ stages:
         repository: 'suneetnangia/azure-iot-edge-secure-access'
         command: 'buildAndPush'
         Dockerfile: './SecureAccess/Dockerfile.amd64.cicd'
-        tags: 'dev-linux64'
+        tags: 'ci-linux64'
         buildContext: '$(Build.ArtifactStagingDirectory)'
   - job: Windows_Image_Deploy
     pool:
@@ -102,5 +102,5 @@ stages:
         repository: 'suneetnangia/azure-iot-edge-secure-access'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile.windows-amd64.cicd'
-        tags: 'dev-win64'
+        tags: 'ci-win64'
         buildContext: '$(Build.ArtifactStagingDirectory)'
