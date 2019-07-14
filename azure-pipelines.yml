@@ -63,7 +63,7 @@ stages:
     - task: Bash@3
       inputs:
         targetType: 'inline'
-        script: 'sudo cp /usr/bin/qemu-arm-static $(System.DefaultWorkingDirectory)/SecureAccess'
+        script: 'sudo cp /usr/bin/qemu-arm-static $(Build.ArtifactStagingDirectory)'
     - task: Docker@2
       inputs:
         containerRegistry: 'Suneet Nangia Public Docker Hub'
