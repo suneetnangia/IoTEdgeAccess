@@ -1,5 +1,5 @@
 # IoT Edge Secure Remote Access 
-[![Build Status](https://dev.azure.com/suneetnangia/IotEdgeAccess/_apis/build/status/suneetnangia.IoTEdgeAccess?branchName=master)](https://dev.azure.com/suneetnangia/IotEdgeAccess/_build/latest?definitionId=13&branchName=master)
+[![Build Status](https://dev.azure.com/suneetnangia/IotEdgeAccess/_apis/build/status/Multi-stage%20Build%20%26%20Release%20Stable%20Branch?branchName=master)](https://dev.azure.com/suneetnangia/IotEdgeAccess/_build/latest?definitionId=14&branchName=master)
 
 Docker Containers Repo-
 https://hub.docker.com/r/suneetnangia/azure-iot-edge-secure-access
