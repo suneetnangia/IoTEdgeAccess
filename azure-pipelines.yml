@@ -14,10 +14,8 @@ stages:
 - stage: Build
   jobs:
   - job: Build
-      
     pool:
       vmImage: 'ubuntu-latest'
-
     steps:
     - task: UseDotNet@2
       inputs:
@@ -37,6 +35,11 @@ stages:
         command: 'test'
         projects: '**/*Tests*.csproj'
         testRunTitle: 'Unit Tests'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: 'SecureAccess/published/SecureAccess'
+        ArtifactName: 'Build'
+        publishLocation: 'Container'
 - stage: Deploy
   dependsOn:
   - Build
@@ -45,6 +48,10 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        artifact: "Build"
+        targetPath: "$(Build.ArtifactStagingDirectory)"
     - task: Bash@3
       inputs:
         targetType: 'inline'
@@ -56,7 +63,7 @@ stages:
     - task: Bash@3
       inputs:
         targetType: 'inline'
-        script: 'sudo cp /usr/bin/qemu-arm-static $(System.DefaultWorkingDirectory)/SecureAccess'
+        script: 'sudo cp /usr/bin/qemu-arm-static $(Build.ArtifactStagingDirectory)'
     - task: Docker@2
       inputs:
         containerRegistry: 'Suneet Nangia Public Docker Hub'
@@ -64,23 +71,31 @@ stages:
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile.arm32v7.cicd'
         tags: '$(Build.BuildId)-arm32v7'
-        buildContext: '**'
+        buildContext: '$(Build.ArtifactStagingDirectory)'
   - job: Linux_Image_Deploy
     pool:
       vmImage: 'ubuntu-latest'
     steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        artifact: "Build"
+        targetPath: "$(Build.ArtifactStagingDirectory)"
     - task: Docker@2
       inputs:
         containerRegistry: 'Suneet Nangia Public Docker Hub'
         repository: 'suneetnangia/azure-iot-edge-secure-access'
         command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile.amd64.cicd'
+        Dockerfile: './SecureAccess/Dockerfile.amd64.cicd'
         tags: '$(Build.BuildId)-linux64'
-        buildContext: '**'
+        buildContext: '$(Build.ArtifactStagingDirectory)'
   - job: Windows_Image_Deploy
     pool:
       vmImage: 'windows-2019'
     steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        artifact: "Build"
+        targetPath: "$(Build.ArtifactStagingDirectory)"
     - task: Docker@2
       inputs:
         containerRegistry: 'Suneet Nangia Public Docker Hub'
@@ -88,4 +103,4 @@ stages:
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile.windows-amd64.cicd'
         tags: '$(Build.BuildId)-win64'
-        buildContext: '**'
+        buildContext: '$(Build.ArtifactStagingDirectory)'
