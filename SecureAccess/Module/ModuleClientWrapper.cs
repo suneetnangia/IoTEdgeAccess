@@ -1,8 +1,6 @@
 ﻿namespace Azure.Iot.Edge.Modules.SecureAccess.Module
 {
     using Microsoft.Azure.Devices.Client;
-    using System.Net.Security;
-    using System.Security.Cryptography.X509Certificates;
     using System.Threading;
     using System.Threading.Tasks;
 
