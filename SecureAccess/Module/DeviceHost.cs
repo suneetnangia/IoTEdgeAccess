@@ -5,6 +5,7 @@
     using System.Threading;
     using System.Threading.Tasks;
 
+
     /// <summary>
     /// Base class to host a virtual device and act as a module of its own in IoT Edge environment.
     /// This can be built further to have host level features e.g. multiple devices, inter module messaging.
