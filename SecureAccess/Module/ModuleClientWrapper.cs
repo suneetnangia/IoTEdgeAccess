@@ -13,7 +13,8 @@
             // Root Cert available at environment variable ["EdgeModuleCACertificateFile"] 
             // which needs manual adding in dev env if CreateFromEnvironmentAsync is not used.
             var amqpsettings = new AmqpTransportSettings(TransportType.Amqp_Tcp_Only);
-            this.moduleClient = ModuleClient.CreateFromConnectionString(connectionString, new ITransportSettings[] { amqpsettings });
+            // this.moduleClient = ModuleClient.CreateFromConnectionString(connectionString, new ITransportSettings[] { amqpsettings });
+            this.moduleClient = ModuleClient.CreateFromEnvironmentAsync(TransportType.Amqp_Tcp_Only).GetAwaiter().GetResult();
         }
 
         public Task OpenAsync()
