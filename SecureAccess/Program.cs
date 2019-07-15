@@ -30,8 +30,20 @@ namespace Azure.Iot.Edge.Modules.SecureAccess
                 // Bootstrap modules and virtual devices.
                 var services = new ServiceCollection();
 
+                if(Environment.GetEnvironmentVariable("EdgeHubConnectionString") is null)
+                {
+                    Console.WriteLine("EdgeHubConnectionString is NULL");
+                }
+
+                if (Environment.GetEnvironmentVariable("IotHubConnectionString") is null)
+                {
+                    Console.WriteLine("IotHubConnectionString is NULL");
+                }
+
+                var hubConnectionString = Environment.GetEnvironmentVariable("EdgeHubConnectionString") ?? Environment.GetEnvironmentVariable("IotHubConnectionString");
+
                 services.AddTransient<IDeviceHost, PureDeviceHost>(isvc =>
-                                    new PureDeviceHost(new ModuleClientWrapper(Environment.GetEnvironmentVariable("EdgeHubConnectionString") ?? Environment.GetEnvironmentVariable("IotHubConnectionString")),
+                                    new PureDeviceHost(new ModuleClientWrapper(hubConnectionString),
                                     new SecureShell(new DeviceClientWrapper(Environment.GetEnvironmentVariable("deviceConnectionString")),
                                     Environment.GetEnvironmentVariable("targetHost"), targetPort)));
 
