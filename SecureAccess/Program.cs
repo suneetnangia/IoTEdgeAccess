@@ -31,7 +31,7 @@ namespace Azure.Iot.Edge.Modules.SecureAccess
                 var services = new ServiceCollection();
 
                 services.AddTransient<IDeviceHost, PureDeviceHost>(isvc =>
-                                    new PureDeviceHost(new ModuleClientWrapper(Environment.GetEnvironmentVariable("EdgeHubConnectionString") == null ? Environment.GetEnvironmentVariable("IotHubConnectionString") : null),
+                                    new PureDeviceHost(new ModuleClientWrapper(Environment.GetEnvironmentVariable("EdgeHubConnectionString") ?? Environment.GetEnvironmentVariable("IotHubConnectionString")),
                                     new SecureShell(new DeviceClientWrapper(Environment.GetEnvironmentVariable("deviceConnectionString")),
                                     Environment.GetEnvironmentVariable("targetHost"), targetPort)));
 
