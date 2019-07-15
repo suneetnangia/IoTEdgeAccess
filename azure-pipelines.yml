@@ -5,7 +5,7 @@
 trigger:
   branches:
     include:
-    - stable
+    - master
   paths:
     exclude:
     - README.md
