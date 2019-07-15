@@ -4,6 +4,8 @@ namespace Azure.Iot.Edge.Modules.SecureAccess
     using Azure.Iot.Edge.Modules.SecureAccess.Module;
     using Microsoft.Extensions.DependencyInjection;
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Net.WebSockets;
     using System.Runtime.Loader;
     using System.Threading;
@@ -29,6 +31,12 @@ namespace Azure.Iot.Edge.Modules.SecureAccess
 
                 // Bootstrap modules and virtual devices.
                 var services = new ServiceCollection();
+
+                // print all env vars
+                foreach (DictionaryEntry envvar in Environment.GetEnvironmentVariables())
+                {
+                    Console.WriteLine($"{envvar.Key}:{envvar.Value}");
+                }
 
                 if(Environment.GetEnvironmentVariable("EdgeHubConnectionString") is null)
                 {
