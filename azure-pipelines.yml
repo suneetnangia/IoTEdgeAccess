@@ -27,7 +27,7 @@ stages:
         command: 'publish'
         publishWebProjects: false
         projects: '**/Azure.Iot.Edge.Modules.SecureAccess.csproj'
-        arguments: '-c Release -o published'
+        arguments: '-c Debug -o published'
         zipAfterPublish: false
     - task: DotNetCoreCLI@2
       displayName: 'Unit Tests'
@@ -70,7 +70,7 @@ stages:
         repository: 'suneetnangia/azure-iot-edge-secure-access'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile.arm32v7.cicd'
-        tags: '$(Build.BuildId)-arm32v7'
+        tags: '$(Build.BuildId)-ci-arm32v7'
         buildContext: '$(Build.ArtifactStagingDirectory)'
   - job: Linux_Image_Deploy
     pool:
@@ -86,7 +86,7 @@ stages:
         repository: 'suneetnangia/azure-iot-edge-secure-access'
         command: 'buildAndPush'
         Dockerfile: './SecureAccess/Dockerfile.amd64.cicd'
-        tags: '$(Build.BuildId)-linux64'
+        tags: '$(Build.BuildId)-ci-linux64'
         buildContext: '$(Build.ArtifactStagingDirectory)'
   - job: Windows_Image_Deploy
     pool:
@@ -102,5 +102,5 @@ stages:
         repository: 'suneetnangia/azure-iot-edge-secure-access'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile.windows-amd64.cicd'
-        tags: '$(Build.BuildId)-win64'
+        tags: '$(Build.BuildId)-ci-win64'
         buildContext: '$(Build.ArtifactStagingDirectory)'
