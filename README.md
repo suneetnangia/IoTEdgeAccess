@@ -8,7 +8,7 @@ This solution allows a secure remote access to your IoT Edge by leveraging [devi
 
 The custom IoT Edge module in this solution run multiple IoT devices virtually on the edge which takes advantage of the security features of device stream. Both clients and Edge/Device makes outbound connection to the streaming endpoint of IoTHub, no inbound connection is made to either client or Edge/Device. 
 
-Each virtual device is an IoT device in IoT Hub which makes an outbound connection securely to Iot Hub. Data is transferred on websockets using TCP as-is without any modification. Proxy service in the diagram below runs local to the clients and it's primary function is to authenticate against IoT Hub and broker TCP connections to websocket. A sample of this service is available [![here](https://github.com/Azure-Samples/azure-iot-samples-csharp)].
+Each virtual device is an IoT device in IoT Hub which makes an outbound connection securely to Iot Hub. Data is transferred on websockets using TCP as-is without any modification. Proxy service in the diagram below runs local to the clients and it's primary function is to authenticate against IoT Hub and broker TCP connections to websocket. A sample of this service is available [here](https://github.com/Azure-Samples/azure-iot-samples-csharp).
 
 Solution is described in below-
 
