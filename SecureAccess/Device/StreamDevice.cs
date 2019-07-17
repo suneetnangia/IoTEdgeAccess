@@ -8,22 +8,16 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    public abstract class StreamDevice : IStreamingDevice
+    public class StreamDevice : IStreamingDevice
     {
         private const int bufferSize = 1024;
 
-        public StreamDevice(IDeviceClient deviceClient, string hostName, int port)
+        public StreamDevice(string hostName, int port, string deviceName)
         {
-            this.DeviceClient = deviceClient;
-
             this.HostName = hostName;
             this.Port = port;
+            this.StreamDeviceName = deviceName;
         }
-
-        /// <summary>
-        /// Device client.
-        /// </summary>
-        public IDeviceClient DeviceClient { get; }
 
         /// <summary>
         /// Host name or IP address of the target service e.g. localhost.
@@ -35,13 +29,18 @@
         /// </summary>
         public int Port { get; }
 
-        public async Task OpenConnectionAsync(IClientWebSocket clientWebSocket, ITcpClient tcpClient, CancellationTokenSource cancellationTokenSource)
+        /// <summary>
+        /// Stream device name.
+        /// </summary>
+        public string StreamDeviceName { get; }
+
+        public async Task OpenConnectionAsync(IDeviceClient deviceClient, IClientWebSocket clientWebSocket, ITcpClient tcpClient, CancellationTokenSource cancellationTokenSource)
         {
-            DeviceStreamRequest streamRequest = await this.DeviceClient.WaitForDeviceStreamRequestAsync(cancellationTokenSource.Token).ConfigureAwait(false);
+            DeviceStreamRequest streamRequest = await deviceClient.WaitForDeviceStreamRequestAsync(cancellationTokenSource.Token).ConfigureAwait(false);
 
             if (streamRequest != null)
             {
-                await this.DeviceClient.AcceptDeviceStreamRequestAsync(streamRequest, cancellationTokenSource.Token).ConfigureAwait(false);
+                await deviceClient.AcceptDeviceStreamRequestAsync(streamRequest, cancellationTokenSource.Token).ConfigureAwait(false);
                 Console.WriteLine($"Device stream accepted from IoT Hub, at {DateTime.UtcNow}");
 
                 clientWebSocket.Options.SetRequestHeader("Authorization", $"Bearer {streamRequest.AuthorizationToken}");
@@ -62,10 +61,12 @@
                     localStream.Close();
                     Console.WriteLine($"Device stream closed to local endpoint, at {DateTime.UtcNow}");
                 }
+
+                await clientWebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, String.Empty, cancellationTokenSource.Token).ConfigureAwait(false);
             }
             else
             {
-                await this.DeviceClient.RejectDeviceStreamRequestAsync(streamRequest, cancellationTokenSource.Token).ConfigureAwait(false);
+                await deviceClient.RejectDeviceStreamRequestAsync(streamRequest, cancellationTokenSource.Token).ConfigureAwait(false);
             }
         }
 
@@ -96,7 +97,6 @@
         public void Dispose()
         {
             GC.SuppressFinalize(this);
-            this.DeviceClient.Dispose();
         }
     }
 }
