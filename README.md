@@ -4,7 +4,7 @@
 Docker Containers (IoT Edge Module) Repo-
 https://hub.docker.com/r/suneetnangia/azure-iot-edge-secure-access
 
-This solution allows a secure remote access to your IoT Edge by leveraging [![device stream](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-device-streams-overview)] feature of IoT Hub. 
+This solution allows a secure remote access to your IoT Edge by leveraging [device stream](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-device-streams-overview) feature of IoT Hub. 
 
 The custom IoT Edge module in this solution run multiple IoT devices virtually on the edge which takes advantage of the security features of device stream. Both clients and Edge/Device makes outbound connection to the streaming endpoint of IoTHub, no inbound connection is made to either client or Edge/Device. 
 
