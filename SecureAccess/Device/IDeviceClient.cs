@@ -5,9 +5,6 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    /// <summary>
-    /// Adapter for DeviceClient.
-    /// </summary>
     public interface IDeviceClient : IDisposable
     {
         Task SetMethodHandlerAsync(string methodName, MethodCallback methodHandler, object userContext);
