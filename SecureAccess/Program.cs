@@ -41,6 +41,8 @@ namespace Azure.Iot.Edge.Modules.SecureAccess
                     // Get a new module.
                     using (var module = serviceProvider.GetService<IDeviceHost>())
                     {
+                        await module.OpenConnectionAsync().ConfigureAwait(false);
+
                         Task.WaitAny(
                         RunVirtualDevice(cts, serviceProvider, "SecureShell", Environment.GetEnvironmentVariable("sshDeviceConnectionString"), module),
                         RunVirtualDevice(cts, serviceProvider, "SecureCopy", Environment.GetEnvironmentVariable("scpDeviceConnectionString"), module),
@@ -59,7 +61,7 @@ namespace Azure.Iot.Edge.Modules.SecureAccess
             {
                 try
                 {
-                    // Run module
+                    // Run virtual device
                     var device = serviceProvider.GetServices<IStreamingDevice>()
                         .FirstOrDefault(sd => sd.StreamDeviceName.Equals(deviceName, StringComparison.InvariantCulture));
 
@@ -70,12 +72,11 @@ namespace Azure.Iot.Edge.Modules.SecureAccess
                             using (var tcpClient = new TcpClientWrapper())
                             {
                                 Console.WriteLine($"{deviceName} awaiting connection...");
-                                await module.OpenConnectionAsync(device, deviceClient, clientWebSocket, tcpClient, cts)
+                                await module.OpenDeviceConnectionAsync(device, deviceClient, clientWebSocket, tcpClient, cts)
                                     .ConfigureAwait(false);
                             }
                         }
                     }
-
                 }
                 catch (Exception ex)
                 {
