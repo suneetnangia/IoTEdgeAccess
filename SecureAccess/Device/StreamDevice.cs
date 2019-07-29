@@ -10,6 +10,7 @@
 
     public class StreamDevice : IStreamingDevice
     {
+        private bool disposed = false;
         private const int bufferSize = 1024;
 
         public StreamDevice(string hostName, int port, string deviceName)
@@ -92,11 +93,6 @@
 
                 await clientWebSocket.SendAsync(new ArraySegment<byte>(buffer, 0, receiveCount), WebSocketMessageType.Binary, true, cancellationToken).ConfigureAwait(false);
             }
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
         }
     }
 }

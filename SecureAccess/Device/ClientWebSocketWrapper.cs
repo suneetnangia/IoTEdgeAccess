@@ -7,6 +7,7 @@
 
     public class ClientWebSocketWrapper : IClientWebSocket
     {
+        private bool disposed = false;
         private readonly ClientWebSocket clientWebSocket;
 
         public ClientWebSocketWrapper()
@@ -18,30 +19,46 @@
 
         public ClientWebSocketOptions Options { get { return this.clientWebSocket.Options; } }
 
-        public async Task CloseAsync(WebSocketCloseStatus closeStatus, string statusDescription, CancellationToken cancellationToken)
+        public Task CloseAsync(WebSocketCloseStatus closeStatus, string statusDescription, CancellationToken cancellationToken)
         {
-            await this.clientWebSocket.CloseAsync(closeStatus, statusDescription, cancellationToken).ConfigureAwait(false);
+            return this.clientWebSocket.CloseAsync(closeStatus, statusDescription, cancellationToken);
         }
 
-        public async Task ConnectAsync(Uri uri, CancellationToken cancellationToken)
+        public Task ConnectAsync(Uri uri, CancellationToken cancellationToken)
         {
-            await this.clientWebSocket.ConnectAsync(uri, cancellationToken).ConfigureAwait(false);
+            return this.clientWebSocket.ConnectAsync(uri, cancellationToken);
         }
 
-        public async Task<WebSocketReceiveResult> ReceiveAsync(ArraySegment<byte> buffer, CancellationToken cancellationToken)
+        public Task<WebSocketReceiveResult> ReceiveAsync(ArraySegment<byte> buffer, CancellationToken cancellationToken)
         {
-            return await this.clientWebSocket.ReceiveAsync(buffer, cancellationToken).ConfigureAwait(false);
+            return this.clientWebSocket.ReceiveAsync(buffer, cancellationToken);
         }
 
-        public async Task SendAsync(ArraySegment<byte> buffer, WebSocketMessageType messageType, bool endOfMessage, CancellationToken cancellationToken)
+        public Task SendAsync(ArraySegment<byte> buffer, WebSocketMessageType messageType, bool endOfMessage, CancellationToken cancellationToken)
         {
-            await this.clientWebSocket.SendAsync(buffer, messageType, endOfMessage, cancellationToken).ConfigureAwait(false);
+            return this.clientWebSocket.SendAsync(buffer, messageType, endOfMessage, cancellationToken);
         }
 
         public void Dispose()
         {
+            this.Dispose(true);
             GC.SuppressFinalize(this);
-            this.clientWebSocket.Dispose();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.disposed)
+                return;
+
+            if (disposing)
+                this.clientWebSocket.Dispose();
+
+            this.disposed = true;
+        }
+
+        ~ClientWebSocketWrapper()
+        {
+            this.Dispose(false);
         }
     }
 }

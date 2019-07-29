@@ -60,26 +60,26 @@ namespace Azure.Iot.Edge.Modules.SecureAccess
                 try
                 {
                     // Run module
-                    using (var device = serviceProvider.GetServices<IStreamingDevice>()
-                        .FirstOrDefault(sd => sd.StreamDeviceName.Equals(deviceName, StringComparison.InvariantCulture)))
+                    var device = serviceProvider.GetServices<IStreamingDevice>()
+                        .FirstOrDefault(sd => sd.StreamDeviceName.Equals(deviceName, StringComparison.InvariantCulture));
+
+                    using (var deviceClient = new DeviceClientWrapper(deviceConnectionString))
                     {
-                        using (var deviceClient = new DeviceClientWrapper(deviceConnectionString))
+                        using (var clientWebSocket = new ClientWebSocketWrapper())
                         {
-                            using (var clientWebSocket = new ClientWebSocketWrapper())
+                            using (var tcpClient = new TcpClientWrapper())
                             {
-                                using (var tcpClient = new TcpClientWrapper())
-                                {
-                                    Console.WriteLine($"{deviceName} awaiting connection...");
-                                    await module.OpenConnectionAsync(device, deviceClient, clientWebSocket, tcpClient, cts)
-                                        .ConfigureAwait(false);
-                                }
+                                Console.WriteLine($"{deviceName} awaiting connection...");
+                                await module.OpenConnectionAsync(device, deviceClient, clientWebSocket, tcpClient, cts)
+                                    .ConfigureAwait(false);
                             }
                         }
                     }
+
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error: {ex.Message}");                    
+                    Console.WriteLine($"Error: {ex.Message}");
                 }
             }
         }

@@ -11,6 +11,7 @@
     /// </summary>
     public abstract class DeviceHost : IDeviceHost
     {
+        private bool disposed = false;
         private IModuleClient IotHubModuleClient { get; }
 
         public DeviceHost(IModuleClient moduleClient)
@@ -29,7 +30,24 @@
 
         public void Dispose()
         {
+            this.Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.disposed)
+                return;
+
+            if (disposing)
+                this.IotHubModuleClient.Dispose();
+
+            this.disposed = true;
+        }
+
+        ~DeviceHost()
+        {
+            this.Dispose(false);
         }
     }
 }

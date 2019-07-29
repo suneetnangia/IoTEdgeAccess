@@ -1,11 +1,13 @@
 ﻿namespace Azure.Iot.Edge.Modules.SecureAccess.Module
 {
     using Microsoft.Azure.Devices.Client;
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
     public class ModuleClientWrapper : IModuleClient
     {
+        private bool disposed = false;
         private readonly ModuleClient moduleClient;
 
         public ModuleClientWrapper()
@@ -33,9 +35,27 @@
             return this.moduleClient.SetMethodHandlerAsync(methodName, methodHandler, userContext);
         }
 
+
         public void Dispose()
         {
-            this.moduleClient.Dispose();
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.disposed)
+                return;
+
+            if (disposing)
+                this.moduleClient.Dispose();
+
+            this.disposed = true;
+        }
+
+        ~ModuleClientWrapper()
+        {
+            this.Dispose(false);
         }
     }
 }
