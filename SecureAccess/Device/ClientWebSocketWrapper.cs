@@ -14,7 +14,7 @@
             this.clientWebSocket = new ClientWebSocket();
         }
 
-        public WebSocketState State { get { return this.clientWebSocket.State; } }
+        public WebSocketState State => this.clientWebSocket.State;
 
         public ClientWebSocketOptions Options { get { return this.clientWebSocket.Options; } }
 
