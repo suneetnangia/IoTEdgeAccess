@@ -10,7 +10,6 @@
 
     public class StreamDevice : IStreamingDevice
     {
-        private bool disposed = false;
         private const int bufferSize = 1024;
 
         public StreamDevice(string hostName, int port, string deviceName)

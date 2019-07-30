@@ -43,6 +43,7 @@ namespace Azure.Iot.Edge.Modules.SecureAccess
                     {
                         await module.OpenConnectionAsync().ConfigureAwait(false);
 
+                        // Run all tasks in parallel.
                         Task.WaitAny(
                         RunVirtualDevice(cts, serviceProvider, "SecureShell", Environment.GetEnvironmentVariable("sshDeviceConnectionString"), module),
                         RunVirtualDevice(cts, serviceProvider, "SecureCopy", Environment.GetEnvironmentVariable("scpDeviceConnectionString"), module),
