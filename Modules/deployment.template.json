@@ -9,7 +9,12 @@
           "settings": {
             "minDockerVersion": "v1.25",
             "loggingOptions": "",
-            "registryCredentials": {              
+            "registryCredentials": {
+              "registry1": {
+                "username": "semoduleregistry",
+                "password": "Gfu33Ch7K6=VrB7Y2Z5Nm5GEKKUPy9T3",
+                "address": "semoduleregistry.azurecr.io"
+              }
             }
           }
         },
