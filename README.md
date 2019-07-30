@@ -42,7 +42,7 @@ Hosting a device virtually in a module has some benefits which can be useful in 
 4. Single management plane (IoT Hub) for access management.
 5. Secure reverse connect mechanism underpinned by device stream feature.
 
-#### Do not use this for application level connectivity which requires low latency and high throughputs, this is designed for on-demand/occasional access to the edge devices for debug or config reasons.
+#### Do not use this for application level connectivity which requires low latency and high throughputs, this is designed for on-demand/occasional access to the edge devices for debug or config reasons. One such example is when you want to remove the unused docker images from the edge.
 
 To learn more about device stream feature, see here-
 https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-device-streams-overview
