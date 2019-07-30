@@ -20,8 +20,18 @@ Key Features-
 3. Secure Access via Device Stream.
 
 Surface Attack Area-
-Surface attack area is greatly reduced by implementing this solution compared to opening a port on Edge device. In this instance access to your Edge device is delegated to IoT Hub which is a secure control plane managed in Azure via RBAC/MFA.
-However, it is therefore even more important now to ensure you take care before granting service connect access permission to any clients, follow a principle of least prevlidge. Even if the service level access is compromised, user will need to supply credentials for the respective service (e.g. SSH) to connect to it.
+There are two attack areas for edge devices in general-
+1. External to the local infrastructure.
+2. Internal to the local infrastruture.
+
+External-
+![solution design](./Architecture/SurfaceAttackAreaIoTHub.jpg)
+It is important to realise that the surface attack area for edge device is moved to IoT Hub in this instance. IoT Hub provides built-in battle hardened features to ensure best practices like principle of least previledge are followed and surface a single control plane for your IoT solution, lowering the overall management overhead. 
+The diagram above depicts the layers from which a user has to go through before they can access the edge device.
+
+Internal-
+![solution design](./Architecture/SurfaceAttackAreaOutOfBand.jpg)
+Attack can equally arise from internal network/infrastucture as well, the above layers protect the edge device by implementing layer 4/7 level isolation and by not exposing any endpoint (using Device Stream feature).
 
 Why hosting virtual devices in a module?
 Hosting a device virtually in a module has some benefits which can be useful in edge scenarios.

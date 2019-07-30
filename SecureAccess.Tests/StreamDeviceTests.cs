@@ -80,11 +80,10 @@ namespace Azure.Iot.Edge.Modules.SecureAccess.Tests
         public async Task CanAcceptDeviceStreamRequest()
         {
             // Arrange
-            using (var secureShellDevice = new SecureShell(localhost, localPort))
-            {
-                // Act
-                await secureShellDevice.OpenConnectionAsync(this.deviceClientMock.Object, this.clientWebSocket.Object, this.tcpClient.Object, this.cancellationTokenSource);
-            }
+            var secureShellDevice = new SecureShell(localhost, localPort);
+
+            // Act
+            await secureShellDevice.OpenConnectionAsync(this.deviceClientMock.Object, this.clientWebSocket.Object, this.tcpClient.Object, this.cancellationTokenSource);
 
             // Assert
             this.deviceClientMock.Verify(dc => dc.AcceptDeviceStreamRequestAsync(this.deviceStreamRequest, this.cancellationTokenSource.Token), Times.Once);
@@ -94,11 +93,10 @@ namespace Azure.Iot.Edge.Modules.SecureAccess.Tests
         public async Task CanOpenWebSocketToIoTHub()
         {
             // Arrange
-            using (var secureShellDevice = new SecureShell(localhost, localPort))
-            {
-                // Act
-                await secureShellDevice.OpenConnectionAsync(this.deviceClientMock.Object, this.clientWebSocket.Object, this.tcpClient.Object, this.cancellationTokenSource);
-            }
+            var secureShellDevice = new SecureShell(localhost, localPort);
+
+            // Act
+            await secureShellDevice.OpenConnectionAsync(this.deviceClientMock.Object, this.clientWebSocket.Object, this.tcpClient.Object, this.cancellationTokenSource);
 
             // Assert
             this.clientWebSocket.Verify(cws => cws.ConnectAsync(uri, this.cancellationTokenSource.Token), Times.Once);
@@ -108,11 +106,10 @@ namespace Azure.Iot.Edge.Modules.SecureAccess.Tests
         public async Task CanReadFromWebSocketToLocalStream()
         {
             // Arrange
-            using (var secureShellDevice = new SecureShell(localhost, localPort))
-            {
-                // Act
-                await secureShellDevice.OpenConnectionAsync(this.deviceClientMock.Object, this.clientWebSocket.Object, this.tcpClient.Object, this.cancellationTokenSource);
-            }
+            var secureShellDevice = new SecureShell(localhost, localPort);
+
+            // Act
+            await secureShellDevice.OpenConnectionAsync(this.deviceClientMock.Object, this.clientWebSocket.Object, this.tcpClient.Object, this.cancellationTokenSource);
 
             // Assert
             this.tcpClient.Verify(tc => tc.GetStream(), Times.Once);
@@ -124,11 +121,10 @@ namespace Azure.Iot.Edge.Modules.SecureAccess.Tests
         public async Task CanReadFromLocalStreamToWebSocket()
         {
             // Arrange
-            using (var secureShellDevice = new SecureShell(localhost, localPort))
-            {
-                // Act
-                await secureShellDevice.OpenConnectionAsync(this.deviceClientMock.Object, this.clientWebSocket.Object, this.tcpClient.Object, this.cancellationTokenSource);
-            }
+            var secureShellDevice = new SecureShell(localhost, localPort);
+
+            // Act
+            await secureShellDevice.OpenConnectionAsync(this.deviceClientMock.Object, this.clientWebSocket.Object, this.tcpClient.Object, this.cancellationTokenSource);
 
             // Assert
             this.tcpClient.Verify(tc => tc.GetStream(), Times.Once);

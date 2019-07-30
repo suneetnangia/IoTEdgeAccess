@@ -41,6 +41,8 @@ namespace Azure.Iot.Edge.Modules.SecureAccess
                     // Get a new module.
                     using (var module = serviceProvider.GetService<IDeviceHost>())
                     {
+                        await module.OpenConnectionAsync().ConfigureAwait(false);
+
                         Task.WaitAny(
                         RunVirtualDevice(cts, serviceProvider, "SecureShell", Environment.GetEnvironmentVariable("sshDeviceConnectionString"), module),
                         RunVirtualDevice(cts, serviceProvider, "SecureCopy", Environment.GetEnvironmentVariable("scpDeviceConnectionString"), module),
@@ -59,27 +61,26 @@ namespace Azure.Iot.Edge.Modules.SecureAccess
             {
                 try
                 {
-                    // Run module
-                    using (var device = serviceProvider.GetServices<IStreamingDevice>()
-                        .FirstOrDefault(sd => sd.StreamDeviceName.Equals(deviceName, StringComparison.InvariantCulture)))
+                    // Run virtual device
+                    var device = serviceProvider.GetServices<IStreamingDevice>()
+                        .FirstOrDefault(sd => sd.StreamDeviceName.Equals(deviceName, StringComparison.InvariantCulture));
+
+                    using (var deviceClient = new DeviceClientWrapper(deviceConnectionString))
                     {
-                        using (var deviceClient = new DeviceClientWrapper(deviceConnectionString))
+                        using (var clientWebSocket = new ClientWebSocketWrapper())
                         {
-                            using (var clientWebSocket = new ClientWebSocketWrapper())
+                            using (var tcpClient = new TcpClientWrapper())
                             {
-                                using (var tcpClient = new TcpClientWrapper())
-                                {
-                                    Console.WriteLine($"{deviceName} awaiting connection...");
-                                    await module.OpenConnectionAsync(device, deviceClient, clientWebSocket, tcpClient, cts)
-                                        .ConfigureAwait(false);
-                                }
+                                Console.WriteLine($"{deviceName} awaiting connection...");
+                                await module.OpenDeviceConnectionAsync(device, deviceClient, clientWebSocket, tcpClient, cts)
+                                    .ConfigureAwait(false);
                             }
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error: {ex.Message}");                    
+                    Console.WriteLine($"Error: {ex.Message}");
                 }
             }
         }

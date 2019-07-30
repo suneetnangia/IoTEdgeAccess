@@ -1,10 +1,11 @@
 ﻿namespace Azure.Iot.Edge.Modules.SecureAccess.Module
 {
     using Microsoft.Azure.Devices.Client;
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
-    public interface IModuleClient
+    public interface IModuleClient : IDisposable
     {
         Task OpenAsync();
         Task SendEventAsync(string outputName, Message message);

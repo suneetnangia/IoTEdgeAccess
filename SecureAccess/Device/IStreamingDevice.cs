@@ -4,7 +4,7 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    public interface IStreamingDevice : IDisposable
+    public interface IStreamingDevice
     {
         Task OpenConnectionAsync(IDeviceClient deviceClient, IClientWebSocket webSocket, ITcpClient tcpClient, CancellationTokenSource cancellationTokenSource);
 

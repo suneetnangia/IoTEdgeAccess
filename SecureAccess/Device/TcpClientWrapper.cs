@@ -7,6 +7,7 @@
 
     public class TcpClientWrapper : ITcpClient
     {
+        private bool disposed = false;
         private readonly TcpClient tcpClient;
 
         public TcpClientWrapper()
@@ -14,9 +15,9 @@
             this.tcpClient = new TcpClient();
         }
 
-        public async Task ConnectAsync(string host, int port)
+        public Task ConnectAsync(string host, int port)
         {
-            await this.tcpClient.ConnectAsync(host, port).ConfigureAwait(false);
+            return this.tcpClient.ConnectAsync(host, port);
         }
 
         public Stream GetStream()
@@ -24,10 +25,27 @@
             return this.tcpClient.GetStream();
         }
 
+
         public void Dispose()
         {
+            this.Dispose(true);
             GC.SuppressFinalize(this);
-            this.tcpClient.Dispose();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.disposed)
+                return;
+
+            if (disposing)
+                this.tcpClient.Dispose();
+
+            this.disposed = true;
+        }
+
+        ~TcpClientWrapper()
+        {
+            this.Dispose(false);
         }
     }
 }

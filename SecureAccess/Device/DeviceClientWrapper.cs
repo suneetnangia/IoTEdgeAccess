@@ -1,11 +1,13 @@
 ﻿namespace Azure.Iot.Edge.Modules.SecureAccess.Device
 {
     using Microsoft.Azure.Devices.Client;
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
     internal class DeviceClientWrapper : IDeviceClient
     {
+        private bool disposed = false;
         private const TransportType deviceTransportType = TransportType.Amqp;
         private readonly DeviceClient deviceClient;
 
@@ -14,29 +16,46 @@
             this.deviceClient = DeviceClient.CreateFromConnectionString(connectionString, deviceTransportType);
         }
 
-        public async Task<DeviceStreamRequest> WaitForDeviceStreamRequestAsync(CancellationToken cancellationToken)
+        public Task<DeviceStreamRequest> WaitForDeviceStreamRequestAsync(CancellationToken cancellationToken)
         {
-            return await this.deviceClient.WaitForDeviceStreamRequestAsync(cancellationToken).ConfigureAwait(false);
+            return this.deviceClient.WaitForDeviceStreamRequestAsync(cancellationToken);
         }
 
-        public async Task AcceptDeviceStreamRequestAsync(DeviceStreamRequest request, CancellationToken cancellationToken)
+        public Task AcceptDeviceStreamRequestAsync(DeviceStreamRequest request, CancellationToken cancellationToken)
         {
-            await this.deviceClient.AcceptDeviceStreamRequestAsync(request, cancellationToken).ConfigureAwait(false);
+            return this.deviceClient.AcceptDeviceStreamRequestAsync(request, cancellationToken);
         }
 
-        public async Task RejectDeviceStreamRequestAsync(DeviceStreamRequest request, CancellationToken cancellationToken)
+        public Task RejectDeviceStreamRequestAsync(DeviceStreamRequest request, CancellationToken cancellationToken)
         {
-            await this.deviceClient.RejectDeviceStreamRequestAsync(request, cancellationToken).ConfigureAwait(false);
+            return this.deviceClient.RejectDeviceStreamRequestAsync(request, cancellationToken);
         }
 
-        public async Task SetMethodHandlerAsync(string methodName, MethodCallback methodHandler, object userContext)
+        public Task SetMethodHandlerAsync(string methodName, MethodCallback methodHandler, object userContext)
         {
-            await this.deviceClient.SetMethodHandlerAsync(methodName, methodHandler, userContext).ConfigureAwait(false);
+            return this.deviceClient.SetMethodHandlerAsync(methodName, methodHandler, userContext);
         }
 
         public void Dispose()
         {
-            this.deviceClient.Dispose();
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.disposed)
+                return;
+
+            if (disposing)
+                this.deviceClient.Dispose();
+
+            this.disposed = true;
+        }
+
+        ~DeviceClientWrapper()
+        {
+            this.Dispose(false);
         }
     }
 }
