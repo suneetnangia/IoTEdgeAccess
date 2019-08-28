@@ -2,7 +2,6 @@
 [![Build Status](https://dev.azure.com/suneetnangia/IotEdgeAccess/_apis/build/status/Multi-stage%20Build%20and%20Release%20Master%20Branch?branchName=master)](https://dev.azure.com/suneetnangia/IotEdgeAccess/_build/latest?definitionId=13&branchName=master)
 
 Docker Containers (IoT Edge Module) Repo-
-
 https://hub.docker.com/r/suneetnangia/azure-iot-edge-secure-access
 
 This solution allows a secure remote access to your IoT Edge by leveraging [device stream](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-device-streams-overview) feature of IoT Hub. 
